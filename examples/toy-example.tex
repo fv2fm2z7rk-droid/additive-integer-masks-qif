@@ -1,0 +1,81 @@
+\documentclass{article}
+\usepackage{amsmath,amssymb}
+\title{Toy Example: Bad versus Good Additive Mask}
+\author{}
+\date{}
+\begin{document}
+\maketitle
+
+\section{Setup and symbols}
+Let the secret \(X\) be a biased bit:
+\[
+\mathbb{P}(X=0)=p=0.6,\qquad\mathbb{P}(X=1)=1-p=0.4.
+\]
+An independent integer-valued mask \(Y\) with probability mass function \(q\) is added, and the adversary observes
+\[
+S=X+Y.
+\]
+The cost of the mask is its absolute moment
+\[
+\mathbb{E}|Y|=\sum_y|y|\,q(y).
+\]
+We allow any mask whose cost is at most a budget \(c\). In this example \(c=0.5\).
+
+The prior vulnerability is the probability that the single best guess is correct with no observation:
+\[
+V(X)=\max_x\mathbb{P}(X=x)=0.6.
+\]
+After observing \(S\), the posterior vulnerability is
+\[
+V(X\mid S)=\sum_s\max_x\mathbb{P}(X=x,S=s).
+\]
+It is the average success probability of an adversary who, for each observed \(s\), guesses the most likely secret. The design goal is to choose \(q\) so that \(V(X\mid S)\) is as small as possible, subject to \(\mathbb{E}|Y|\le c\).
+
+\section{A bad mask}
+Take
+\[
+q_{\mathrm{bad}}(0)=0.5,\qquad q_{\mathrm{bad}}(1)=0.5.
+\]
+The cost is \(0.5\), so the mask is feasible. The possible observations and the adversary's best guesses are:
+
+\begin{center}
+\begin{tabular}{c|c|c|c}
+\(S\) & \(\mathbb{P}(S)\) & best guess & success probability given \(S\)\\
+\hline
+\(0\) & \(0.30\) & \(0\) & \(1\)\\
+\(1\) & \(0.50\) & \(0\) & \(0.6\)\\
+\(2\) & \(0.20\) & \(1\) & \(1\)
+\end{tabular}
+\end{center}
+Hence
+\[
+V(X\mid S)=0.30\cdot1+0.50\cdot0.6+0.20\cdot1=0.80.
+\]
+The mask has raised the adversary's success probability from \(0.6\) to \(0.80\).
+
+\section{A good mask}
+Now take
+\[
+q_{\mathrm{good}}(-1)=\frac16,\qquad
+q_{\mathrm{good}}(0)=\frac12,\qquad
+q_{\mathrm{good}}(1)=\frac13.
+\]
+The cost is again \(0.5\). Direct computation of the posterior vulnerability yields
+\[
+V(X\mid S)=\frac{11}{15}\approx0.733.
+\]
+
+\section{Comparison}
+\begin{center}
+\begin{tabular}{l|c|c}
+Mask & Cost & Vulnerability\\
+\hline
+Bad & \(0.5\) & \(0.80\)\\
+Good & \(0.5\) & \(0.733\)
+\end{tabular}
+\end{center}
+Both masks use the same budget. The good mask places a little mass on \(-1\) and balances the positive side so that the adversary's best guess is correct less often on average. The paper proves that \(11/15\) is optimal for \(p=0.6\) and \(c=0.5\): no feasible mask achieves a smaller posterior vulnerability.
+
+\section{Motivation}
+The example shows why the shape of the noise matters. Spending the whole budget on a simple two-point mask can make the adversary more successful. A carefully shaped mask with the same cost reduces the adversary's success probability. The paper determines the optimal shape for every budget, for both uniform and biased secrets, and identifies the precise cost at which further noise no longer helps.
+\end{document}
