@@ -3,8 +3,7 @@
 V_p(q) = sum_s max{p q(s), (1-p) q(s-1)},  cost E|Y| <= c,  Y on Z.
 Upper bounds: explicit masks (exactly evaluated in rationals).
 Lower bounds: weak-duality certificates alpha: Z->[0,1] with alpha=1 left of the
-window and 0 right of it (exactly checked in rationals, tails included), and
-modular LP values on Z_n (Wrapping lemma), the latter in floating point.
+window and 0 right of it (exactly checked in rationals, tails included).
 """
 from fractions import Fraction as F
 import math
@@ -39,7 +38,7 @@ def c1c2(p):
     return (1 + a * a) / (1 + a + a * a), (1 + a * a + 2 * a ** 3) / (1 + a + a * a + a ** 3)
 
 def known_V(p, c):
-    """Integer paper I1-I3 closed forms where proven, else None."""
+    """Closed forms of Theorem 10 and Corollary 21 where they apply, else None."""
     if c <= 1 - p: return 1 - p * c
     if c >= c_crit(p): return p
     if p <= PHI:
@@ -143,20 +142,3 @@ def rig_lower(pF, cF, alpha, lam, A, B, den=10**12):
     vals = [pF * A_(y) + (1 - pF) * (1 - A_(y + 1)) + lamF * abs(y) for y in range(-A - 1, B + 2)]
     mu = min(vals)
     return mu - lamF * cF, al, lamF, mu
-
-# ---------------------------------------------------------------- modular LP on Z_n
-def mod_lp(p, c, n):
-    """V*_{p,n}(c): min sum_s max{p q(s),(1-p) q(s-1)} on Z_n, E d(Y,0)<=c."""
-    d = np.array([min(y, n - y) for y in range(n)], float)
-    nv = 2 * n
-    rows = lil_matrix((n + 1, nv)); b = np.zeros(n + 1)
-    for s in range(n):
-        rows[s, (s - 1) % n] += (1 - p); rows[s, s] += -p; rows[s, n + s] = -1
-    rows[n, :n] = d; b[n] = c
-    cobj = np.r_[np.zeros(n), np.ones(n)]
-    Aeq = csr_matrix(np.r_[np.ones(n), np.zeros(n)].reshape(1, -1))
-    res = linprog(cobj, A_ub=csr_matrix(rows), b_ub=b, A_eq=Aeq, b_eq=[1],
-                  bounds=[(0, None)] * nv, method="highs",
-                  options=dict(primal_feasibility_tolerance=1e-10, dual_feasibility_tolerance=1e-10))
-    assert res.status == 0
-    return p + res.fun

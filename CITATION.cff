@@ -1,0 +1,22 @@
+cff-version: 1.2.0
+message: "If you use these verification scripts, please cite the accompanying paper."
+title: "Verification Scripts for Optimal Additive Integer Masks for One-Guess Vulnerability under an Absolute-Moment Budget"
+authors:
+  - family-names: "Pääkkönen"
+    given-names: "Joonas"
+    affiliation: "Dalarna University, Sweden"
+    email: "jpa@du.se"
+version: "3.0"
+date-released: "2026-11-21"
+license: MIT
+repository-code: "https://github.com/fv2fm2z7rk-droid/additive-integer-masks-qif"
+preferred-citation:
+  type: article
+  authors:
+    - family-names: "Pääkkönen"
+      given-names: "Joonas"
+  title: "Optimal Additive Integer Masks for One-Guess Vulnerability under an Absolute-Moment Budget"
+  year: 2026
+  identifiers:
+    - type: other
+      value: "arXiv:2611.16066"
