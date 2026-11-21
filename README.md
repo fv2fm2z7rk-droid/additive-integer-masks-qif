@@ -4,7 +4,7 @@ Exact-arithmetic verification scripts, weak-duality LP checks, and figure-genera
 
 > **Joonas Pääkkönen**, *Optimal Additive Integer Masks for One-Guess Vulnerability under an Absolute-Moment Budget*, arXiv:2611.16066 (v3, Nov. 2026).
 
-<!-- After Zenodo mints your DOI, paste the Zenodo badge here -->
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.24418378.svg)](https://doi.org/10.5281/zenodo.24418378)
 
 ## Requirements
 
